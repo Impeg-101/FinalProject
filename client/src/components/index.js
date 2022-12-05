@@ -14,6 +14,10 @@ import SplashScreen from './SplashScreen'
 import Statusbar from './Statusbar'
 import WorkspaceScreen from './WorkspaceScreen'
 import SearchBar from './SearchBar'
+import PanelLeft from './PanelLeft'
+import PanelRight from './PanelRight'
+import Player from './Player'
+import Comment from './Comment'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -36,4 +40,8 @@ export {
     SplashScreen,
     Statusbar, 
     WorkspaceScreen,
-    SearchBar}
+    SearchBar,
+    PanelLeft,
+    PanelRight,
+    Player,
+    Comment}

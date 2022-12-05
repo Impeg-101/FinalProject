@@ -6,7 +6,7 @@ import MUIRemoveSongModal from './MUIRemoveSongModal'
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import { GlobalStoreContext } from '../store/index.js'
-import SearchBar from './SearchBar'
+import SearchBar from './SearchBar.js'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -33,6 +33,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import PanelLeft from './PanelLeft.js'
+import PanelRight from './PanelRight.js'
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -79,11 +81,19 @@ function WorkspaceScreen() {
         justifyContent: 'center',
       }));
 
+      const handleClick = () => {
+        store.createNewList();
+      }
+
     return (
          <div>
-        {SearchBar}
-            
-            { "the rest" }
+            <SearchBar/>
+            <PanelLeft/>
+            <PanelRight/>
+            <Button
+                onClick={handleClick}>
+                {"+ Your List"}
+            </Button>
         
          </div>
          

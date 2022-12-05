@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
+import logo from './loigo.png'
 
 import EditToolbar from './EditToolbar'
 
@@ -121,7 +122,8 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
+                        {/* <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'></Link> */}
+                    <img src = {logo}/>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' } }}>
@@ -129,7 +131,7 @@ export default function AppBanner() {
                         <Button variant="outlined"
                             color='inherit'
                         >
-                            <Link onClick={handleGuest} style={{ textDecoration: 'none', color: 'white' }} to='/home/'>Guest</Link>
+                            <Link onClick={handleGuest} style={{ textDecoration: 'none', color: 'white' }} to='/user/'>Guest</Link>
                         </Button>
                         <Button variant="outlined"
                             color='inherit'

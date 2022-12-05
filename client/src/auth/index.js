@@ -117,7 +117,7 @@ function AuthContextProvider(props) {
                         errorMessage: null
                     }
                 })
-                history.push("/");
+                history.push("/user/");
             }
         } catch(error){
             authReducer({

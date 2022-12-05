@@ -463,8 +463,22 @@ input {
   }
 }
 
-.panel-left, panel-right, search-panel{
+.panel-left, panel-right{
   flex:1;
   overflow:hidden;
+}
+
+.panel-left{
+  float:left;
+  width: 60%;
+  height: 300px;
+  background-color:#636723;
+}
+
+.panel-right{
+  float:right;
+  width: 40%;
+  height: 300px;
+  background-color:#9ba051;
 }
 

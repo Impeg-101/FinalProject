@@ -277,7 +277,6 @@ function GlobalStoreContextProvider(props) {
             payload: {}
         });
         tps.clearAllTransactions();
-        history.push("/");
     }
 
     // THIS FUNCTION CREATES A NEW LIST
@@ -293,9 +292,6 @@ function GlobalStoreContextProvider(props) {
                 payload: newList
             }
             );
-
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/playlist/" + newList._id);
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -321,6 +317,27 @@ function GlobalStoreContextProvider(props) {
         asyncLoadIdNamePairs();
     }
 
+    store.getPlaylist = function () {
+        async function asyncGetPlaylist() {
+            const response = await api.getPlaylistPairs();
+            if(response.data.success){
+                return response
+            }
+            return []
+        }
+        asyncGetPlaylist();
+    }
+    store.getSongs = function (id) {
+        async function asyncGetSongs(id) {
+            const response = await api.getPlaylistById(id);
+            if(response.data.success){
+                return response.songs
+            }
+            return []
+        }
+        asyncGetSongs(id);
+    }
+
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
     // OF A LIST, WHICH INCLUDES USING A VERIFICATION MODAL. THE
     // FUNCTIONS ARE markListForDeletion, deleteList, deleteMarkedList,
@@ -342,9 +359,6 @@ function GlobalStoreContextProvider(props) {
         async function processDelete(id) {
             let response = await api.deletePlaylistById(id);
             store.loadIdNamePairs();
-            if (response.data.success) {
-                history.push("/");
-            }
         }
         processDelete(id);
     }
@@ -404,7 +418,6 @@ function GlobalStoreContextProvider(props) {
                         type: GlobalStoreActionType.SET_CURRENT_LIST,
                         payload: playlist
                     });
-                    history.push("/playlist/" + playlist._id);
                 }
             }
         }
