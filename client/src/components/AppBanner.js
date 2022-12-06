@@ -4,7 +4,7 @@ import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
 import logo from './loigo.png'
 
-import EditToolbar from './EditToolbar'
+// import EditToolbar from './EditToolbar'
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AppBar from '@mui/material/AppBar';
@@ -98,9 +98,6 @@ export default function AppBanner() {
     let menu = loggedOutMenu;
     if (auth.loggedIn) {
         menu = loggedInMenu;
-        if (store.currentList) {
-            editToolbar = <EditToolbar />;
-        }
     }
     
     function getAccountMenu(loggedIn) {

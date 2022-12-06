@@ -4,11 +4,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
-import { Box, Typography, List, TextField ,ListItemButton, Collapse} from '@mui/material';
+import { Box, Typography, List, TextField ,ListItemButton, Collapse,Button} from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import * as React from 'react';
-
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -21,7 +22,6 @@ function ListCard(props) {
     // const [editActive, setEditActive] = useState(false);
     // const [text, setText] = useState("");
     const { idNamePair, selected } = props;
-
     // function handleLoadList(event, id) {
     //     console.log("handleLoadList for " + id);
     //     if (!event.target.disabled) {
@@ -75,7 +75,7 @@ function ListCard(props) {
     // if (store.isListNameEditActive) {
     //     cardStatus = true;
     // }
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const handleClick = () => {
         setOpen(!open);
       };
@@ -108,13 +108,24 @@ function ListCard(props) {
         // </ListItem>
             <List id={"playlist" + idNamePair._id} style={{maxHeight: 200, overflow: 'auto'}}>
                 <ListItemButton onClick={handleClick}>
-                    <Typography>{idNamePair._id}</Typography>
+                    <Typography>{idNamePair.name}</Typography>
+                    <Box justifyContent={"end"}>
+                        <ThumbUpIcon/>
+                        <ThumbDownIcon/>
+                        <EditIcon/>
+                        <Button>Delete</Button>
+                    </Box>
+
                     {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                     {songs.map((song)=>(<Typography>{song}</Typography>))}
                     </List>
+                    <Button >Undo</Button>
+                    <Button>Redo</Button>
+                    <Button>Publish</Button>
+                    <Button>Duplicate</Button>
                 </Collapse>
             </List>
 
@@ -137,6 +148,7 @@ function ListCard(props) {
     //             autoFocus
     //         />
     // }
+
     return (
         cardElement
     );

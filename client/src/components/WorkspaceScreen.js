@@ -53,7 +53,7 @@ function WorkspaceScreen() {
         modalJSX = <MUIRemoveSongModal />;
     }
 
-    console.log("Workspace")
+    // console.log("Workspace")
 
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -90,10 +90,10 @@ function WorkspaceScreen() {
             <SearchBar/>
             <PanelLeft/>
             <PanelRight/>
-            <Button
+            <div id="create-list-button"><Button
                 onClick={handleClick}>
                 {"+ Your List"}
-            </Button>
+            </Button></div>
         
          </div>
          

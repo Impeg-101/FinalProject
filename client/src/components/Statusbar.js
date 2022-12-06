@@ -34,4 +34,4 @@ function Statusbar() {
 onClick={clickHandler} 
 value='clickyclicky' />*/
 
-export default Statusbar;
+// export default Statusbar;

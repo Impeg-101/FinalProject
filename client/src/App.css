@@ -465,7 +465,7 @@ input {
 
 .panel-left, panel-right{
   flex:1;
-  overflow:hidden;
+  overflow:scroll;
 }
 
 .panel-left{

@@ -34,12 +34,12 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import HomeIcon from '@mui/icons-material/Home';
-
+import SortIcon from '@mui/icons-material/Sort';
 
 
 
 function SearchBar() {
-    console.log("SearchBar")
+    // console.log("SearchBar")
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -120,6 +120,10 @@ function SearchBar() {
               onKeyDown = {handleKeydown}
             />
           </Search>
+
+          <Typography>Sort By</Typography>
+          <SortIcon/>
+
         </Toolbar>
       </AppBar>
     </Box>

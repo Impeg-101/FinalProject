@@ -304,7 +304,7 @@ function GlobalStoreContextProvider(props) {
             const response = await api.getPlaylistPairs();
             if (response.data.success) {
                 let pairsArray = response.data.idNamePairs;
-                console.log(pairsArray);
+                // console.log(pairsArray);
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: pairsArray
@@ -321,6 +321,7 @@ function GlobalStoreContextProvider(props) {
         async function asyncGetPlaylist() {
             const response = await api.getPlaylistPairs();
             if(response.data.success){
+                // console.log(response);
                 return response
             }
             return []

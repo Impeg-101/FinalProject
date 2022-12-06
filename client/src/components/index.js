@@ -26,7 +26,7 @@ import Comment from './Comment'
 */
 export { 
     AppBanner,  
-    EditToolbar, 
+    // EditToolbar, 
     HomeScreen,
     HomeWrapper,
     ListCard, 
@@ -38,7 +38,7 @@ export {
     SongCard,
     RegisterScreen,
     SplashScreen,
-    Statusbar, 
+    // Statusbar, 
     WorkspaceScreen,
     SearchBar,
     PanelLeft,

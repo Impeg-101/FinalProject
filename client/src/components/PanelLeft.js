@@ -4,50 +4,39 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import * as React from 'react';
-import ListCard from './ListCard'
+import ListCard from './ListCard.js'
 
 
 function PanelLeft () {
     const {store} = useContext(GlobalStoreContext);
-    let playlists = ["a","a","a"]
-    // playlists = store.getPlaylist();
 
-    const [open, setOpen] = React.useState(true);
+    let condition = 'none';
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
+    if(condition === "none"){
+        store.loadIdNamePairs();
+    }
+
+    let playlists = store.idNamePairs;
+    // console.log(playlists);
 
     return (
-        <div className="panel-left"><Box id="playlists">
+    <div className="panel-left">
+        <Box id="playlists">
 
-        <List>
-        {
-                playlists.map((list)=>{
-                    <ListCard
-                        idNamePair={{"_id" : list, "name" : list}}
-                        select={false}
-                        />
-                    }
-                )
-
-            }
-
-        <List id={"playlist" } style={{maxHeight: 200, overflow: 'auto'}}>
-                <ListItemButton >
-                    <Typography>a</Typography>
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                    {playlists.map((song)=>(<Typography>b</Typography>))}
-                    </List>
-                </Collapse>
-        </List>
+            <List>
             
-        </List>
+                    {store.idNamePairs.map((list)=>{
+                        return  <ListCard
+                            idNamePair={{"_id" : list._id, "name" : list.name}}
+                            selected={false}
+                            />
+                        }
+                    )}
+                
+            </List>
             {"lists"}
-    </Box></div>
+        </Box>
+    </div>
 
     )
 }
