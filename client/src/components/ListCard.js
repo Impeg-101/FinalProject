@@ -5,11 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import { Box, Typography, List, TextField ,ListItemButton, Collapse,Button} from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandLessButton from '@mui/icons-material/ExpandLess';
+import ExpandMoreButton from '@mui/icons-material/ExpandMore';
 import * as React from 'react';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import SongCard from './SongCard';
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -18,7 +19,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
     @author McKilla Gorilla
 */
 function ListCard(props) {
-    // const { store } = useContext(GlobalStoreContext);
+    const { store } = useContext(GlobalStoreContext);
     // const [editActive, setEditActive] = useState(false);
     // const [text, setText] = useState("");
     const { idNamePair, selected } = props;
@@ -49,12 +50,23 @@ function ListCard(props) {
     //     setEditActive(newActive);
     // }
 
-    // async function handleDeleteList(event, id) {
-    //     event.stopPropagation();
-    //     let _id = event.target.id;
-    //     _id = ("" + _id).substring("delete-list-".length);
-    //     store.markListForDeletion(id);
-    // }
+    async function handleDeleteList(event, id) {
+        event.stopPropagation();
+        let _id = event.target.id;
+        _id = ("" + _id).substring("delete-list-".length);
+        store.markListForDeletion(id);
+    }
+
+    async function handleAddNewSong() {
+        store.addNewSong(idNamePair._id);
+    }
+
+    function handleUndo() {
+        store.undo();
+    }
+    function handleRedo() {
+        store.redo();
+    }
 
     // function handleKeyPress(event) {
     //     if (event.code === "Enter") {
@@ -76,58 +88,75 @@ function ListCard(props) {
     //     cardStatus = true;
     // }
     const [open, setOpen] = React.useState(false);
+
     const handleClick = () => {
+        store.openList(idNamePair._id);
         setOpen(!open);
       };
+    
+    let list = [];
+    if(store.currentList !== null){
+        list = store.currentList.songs;
+    }
 
-    let songs = ['b','b','b','b','b','b','b']
+    const handleThumbsUp = () => {
+        console.log("up");
+    }
+    const handleThumbsDown = () => {
+        console.log("down");
+    }
+    const handleEdit = () => {
+        console.log("edit");
+    }
+    const handleDelete = () => {
+        console.log("delete");
+    }
+    
     let cardElement =
-        // <ListItem
-        //     id={idNamePair._id}
-        //     key={idNamePair._id}
-        //     sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
-        //     style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
-        //     button
-        //     onClick={(event) => {
-        //         handleLoadList(event, idNamePair._id)
-        //     }}
-        // >
-        //     <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-        //     <Box sx={{ p: 1 }}>
-        //         <IconButton onClick={handleToggleEdit} aria-label='edit'>
-        //             <EditIcon style={{fontSize:'48pt'}} />
-        //         </IconButton>
-        //     </Box>
-        //     <Box sx={{ p: 1 }}>
-        //         <IconButton onClick={(event) => {
-        //                 handleDeleteList(event, idNamePair._id)
-        //             }} aria-label='delete'>
-        //             <DeleteIcon style={{fontSize:'48pt'}} />
-        //         </IconButton>
-        //     </Box>
-        // </ListItem>
             <List id={"playlist" + idNamePair._id} style={{maxHeight: 200, overflow: 'auto'}}>
-                <ListItemButton onClick={handleClick}>
+                <ListItem>
                     <Typography>{idNamePair.name}</Typography>
                     <Box justifyContent={"end"}>
-                        <ThumbUpIcon/>
-                        <ThumbDownIcon/>
-                        <EditIcon/>
-                        <Button>Delete</Button>
+                        <ThumbUpIcon onClick = {handleThumbsUp}/>
+                        <ThumbDownIcon onClick = {handleThumbsDown}/>
+                        <EditIcon onClick = {handleEdit}/>
+                        <Button onClick = {(event) => handleDeleteList(event,idNamePair._id)}>Delete</Button>
                     </Box>
 
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                    {songs.map((song)=>(<Typography>{song}</Typography>))}
-                    </List>
-                    <Button >Undo</Button>
-                    <Button>Redo</Button>
-                    <Button>Publish</Button>
-                    <Button>Duplicate</Button>
-                </Collapse>
+                    {open ? <ExpandLessButton onClick={handleClick} /> : <ExpandMoreButton onClick={handleClick} />}
+                </ListItem>
             </List>
+    
+    if(open){
+        cardElement =
+            <List id={"playlist" + idNamePair._id} style={{maxHeight: 200, overflow: 'auto'}}>
+                <ListItem>
+                    <Typography>{idNamePair._id}</Typography>
+                    <Box justifyContent={"end"}>
+                        <ThumbUpIcon onClick = {handleThumbsUp}/>
+                        <ThumbDownIcon onClick = {handleThumbsDown}/>
+                        <EditIcon onClick = {handleEdit}/>
+                        <Button onClick = {(event) => handleDeleteList(event,idNamePair._id)}>Delete</Button>
+                    </Box>
+
+                    {open ? <ExpandLessButton onClick={handleClick} /> : <ExpandMoreButton onClick={handleClick} />}
+                </ListItem>
+                    <List component="div" disablePadding>
+                    {list.map((song, index)=>(<SongCard
+                                            id={'playlist-song-' + (index)}
+                                            key={'playlist-song-' + (index)}
+                                            index={index}
+                                            song={song}
+                                        />))}
+                    <Button onClick={handleAddNewSong}>Add Song</Button>
+                    </List>
+                    <Button onClick={handleAddNewSong}>Add Song</Button>
+                    <Button onClick = {handleUndo}>Undo</Button>
+                    <Button onClick = {handleRedo}>Redo</Button>
+                    <Button onClick = {handleUndo}>Publish</Button>
+                    <Button onClick = {handleUndo}>Duplicate</Button>
+            </List>
+    }
 
     // if (editActive) {
     //     cardElement =

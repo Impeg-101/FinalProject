@@ -104,6 +104,11 @@ getPlaylistById = async (req, res) => {
 
         // DOES THIS LIST BELONG TO THIS USER?
         async function asyncFindUser(list) {
+            if (list == null){
+                // this bug has to do with marklistfordeletion being run two times
+                return res.status(400).json({ success: false, error: "there is no playlist" });
+            }
+
             await User.findOne({ email: list.ownerEmail }, (err, user) => {
                 console.log("user._id: " + user._id);
                 console.log("req.userId: " + req.userId);
@@ -216,6 +221,8 @@ updatePlaylist = async (req, res) => {
 
                     list.name = body.playlist.name;
                     list.songs = body.playlist.songs;
+                    list.comments = body.playlist.comments;
+                    list.opinion = body.playlist.opinion;
                     list
                         .save()
                         .then(() => {

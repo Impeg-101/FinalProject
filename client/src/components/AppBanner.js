@@ -22,7 +22,7 @@ export default function AppBanner() {
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
 
-    console.log("AppBanner")
+    // console.log("AppBanner")
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -109,6 +109,34 @@ export default function AppBanner() {
             return <div />;
     }
 
+    let logoutBar = (
+    <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' } }}>
+                        
+        <Button variant="outlined"
+            color='inherit'
+        >
+            <Link onClick={handleGuest} style={{ textDecoration: 'none', color: 'white' }} to='/user/'>Guest</Link>
+        </Button>
+        <Button variant="outlined"
+            color='inherit'
+        >
+            <Link onClick={handleSignIn} style={{ textDecoration: 'none', color: 'white' }} to='/register/'>SignUp</Link>
+        </Button><Button variant="outlined"
+            color='inherit'
+        >
+            <Link onClick={handleLogin} style={{ textDecoration: 'none', color: 'white' }} to='/login/'>LogIn</Link>
+        </Button>
+    </Box>);
+    let loginBar = (
+        <IconButton>user</IconButton>
+    );
+
+    let bar = logoutBar;
+    if (auth.loggedIn) {
+        bar = loginBar;
+    }
+
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
@@ -123,23 +151,7 @@ export default function AppBanner() {
                     <img src = {logo}/>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
-                    <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' } }}>
-                        
-                        <Button variant="outlined"
-                            color='inherit'
-                        >
-                            <Link onClick={handleGuest} style={{ textDecoration: 'none', color: 'white' }} to='/user/'>Guest</Link>
-                        </Button>
-                        <Button variant="outlined"
-                            color='inherit'
-                        >
-                            <Link onClick={handleSignIn} style={{ textDecoration: 'none', color: 'white' }} to='/register/'>SignUp</Link>
-                        </Button><Button variant="outlined"
-                            color='inherit'
-                        >
-                            <Link onClick={handleLogin} style={{ textDecoration: 'none', color: 'white' }} to='/login/'>LogIn</Link>
-                        </Button>
-                    </Box>
+                    {bar}
                 </Toolbar>
             </AppBar>
             {

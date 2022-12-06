@@ -35,6 +35,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import PanelLeft from './PanelLeft.js'
 import PanelRight from './PanelRight.js'
+import MUIDeleteModal from './MUIDeleteModal'
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -53,33 +54,7 @@ function WorkspaceScreen() {
         modalJSX = <MUIRemoveSongModal />;
     }
 
-    // console.log("Workspace")
-
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-          backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-          marginLeft: theme.spacing(3),
-          width: 'auto',
-        },
-      }));
-      
-      const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }));
+      console.log("Workspace");
 
       const handleClick = () => {
         store.createNewList();
@@ -94,7 +69,8 @@ function WorkspaceScreen() {
                 onClick={handleClick}>
                 {"+ Your List"}
             </Button></div>
-        
+            {modalJSX}
+            <MUIDeleteModal/>
          </div>
          
     )

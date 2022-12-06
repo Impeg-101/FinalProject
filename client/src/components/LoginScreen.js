@@ -26,7 +26,6 @@ export default function LoginScreen() {
             formData.get('email'),
             formData.get('password')
         );
-
     };
 
     let modalJSX = "";
