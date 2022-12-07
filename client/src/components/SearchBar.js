@@ -84,7 +84,7 @@ function SearchBar() {
 
     return (
       <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: '#ff5722' }}>
         <Toolbar>
         <IconButton 
           variant="outlined"

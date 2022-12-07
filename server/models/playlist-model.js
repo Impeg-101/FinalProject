@@ -19,15 +19,14 @@ const playlistSchema = new Schema(
         comments: {type:[{
                     comment: String,
                     commenter: ObjectId
-                }],required: true },
+        }], required: true },
         opinion: {
-            type: [{
+            type: {
                 likes : String,
                 dislikes : String,
                 listens : String
-            }],required: true },
-        published:{type:Boolean, required: true }
-        
+        }, required: true },
+        published:{ type: Boolean, required: true }
     },
     { timestamps: true },
 )

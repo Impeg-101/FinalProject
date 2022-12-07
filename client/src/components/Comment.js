@@ -9,6 +9,10 @@ function Player() {
 
     let sample = ["vaswfqdwf","hsdf","whrt","meyt"]
 
+    const handleKeyDown = (event) =>{
+        console.log("comment");
+    }
+
     return (
             <Box id="comment">
 
@@ -24,7 +28,7 @@ function Player() {
                 </List>
                 
                 <TextField fullWidth id="comment-basic" label="Comment" variant="filled" />
-
+                    
             </Box>
         );
 }

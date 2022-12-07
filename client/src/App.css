@@ -10,8 +10,8 @@
   --swatch-primary: #e6e6e6;
   --swatch-complement: #e1e4cb;
   --swatch-contrast: #111111;
-  --swatch-accent: #669966;
-  --swatch-status: #123456;
+  --swatch-accent: #9fd421;
+  --swatch-status: #ff6600;
   --my-font-family: "Robaaaoto";
   --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
 }
@@ -466,19 +466,19 @@ input {
 .panel-left, panel-right{
   flex:1;
   overflow:scroll;
+  overflow-x: hidden;
+  height: 900px;
 }
 
 .panel-left{
   float:left;
-  width: 60%;
-  height: 300px;
-  background-color:#636723;
+  width: 50%;
+  background-color:#f7c17b;
 }
 
 .panel-right{
   float:right;
-  width: 40%;
-  height: 300px;
-  background-color:#9ba051;
+  width: 50%;
+  background-color:#f89756;
 }
 

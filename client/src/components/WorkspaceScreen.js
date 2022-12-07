@@ -54,7 +54,7 @@ function WorkspaceScreen() {
         modalJSX = <MUIRemoveSongModal />;
     }
 
-      console.log("Workspace");
+    //   console.log("Workspace");
 
       const handleClick = () => {
         store.createNewList();

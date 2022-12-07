@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
 import logo from './loigo.png'
-
+import { orange } from '@mui/material/colors';
 // import EditToolbar from './EditToolbar'
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -55,26 +55,7 @@ export default function AppBanner() {
     }
 
     const menuId = 'primary-search-account-menu';
-    const loggedOutMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
-        </Menu>
-    );
+    const loggedOutMenu = "";
     const loggedInMenu = 
         <Menu
             anchorEl={anchorEl}
@@ -127,8 +108,34 @@ export default function AppBanner() {
             <Link onClick={handleLogin} style={{ textDecoration: 'none', color: 'white' }} to='/login/'>LogIn</Link>
         </Button>
     </Box>);
+
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    };
+
     let loginBar = (
-        <IconButton>user</IconButton>
+        <IconButton
+            id="basic-button"
+            onClick={handleClick}>user
+            <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>  
+        </IconButton>
     );
 
     let bar = logoutBar;
@@ -136,11 +143,10 @@ export default function AppBanner() {
         bar = loginBar;
     }
 
-
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
-                <Toolbar>
+            <AppBar position="static" style={{ background: '#ffc107' }}>
+                <Toolbar >
                     <Typography                        
                         variant="h4"
                         noWrap

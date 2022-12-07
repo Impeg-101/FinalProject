@@ -16,20 +16,19 @@ function PanelLeft () {
         store.loadIdNamePairs();
     }, []);
 
+    // console.log(store.idNamePairs)
+
     return (
     <div className="panel-left">
         <Box id="playlists">
-
             <List>
-            
                 {store.idNamePairs.map((list)=>{
                     return  <ListCard
-                        idNamePair={{"_id" : list._id, "name" : list.name}}
+                        idNamePair={list}
                         selected={false}
                         />
                     }
                 )}
-                
             </List>
         </Box>
     </div>

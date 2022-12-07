@@ -22,7 +22,8 @@ createPlaylist = (req, res) => {
             error: 'You must provide a Playlist',
         })
     }
-    
+    console.log("bngvveduioeiodhveioadghvv")
+    console.log(body);
     const playlist = new Playlist(body);
     console.log("playlist: " + playlist.toString());
     if (!playlist) {
@@ -155,7 +156,9 @@ getPlaylistPairs = async (req, res) => {
                         let list = playlists[key];
                         let pair = {
                             _id: list._id,
-                            name: list.name
+                            name: list.name,
+                            opinion : list.opinion,
+                            published : list.published
                         };
                         pairs.push(pair);
                     }
@@ -223,6 +226,8 @@ updatePlaylist = async (req, res) => {
                     list.songs = body.playlist.songs;
                     list.comments = body.playlist.comments;
                     list.opinion = body.playlist.opinion;
+                    list.published = body.playlist.published;
+
                     list
                         .save()
                         .then(() => {
