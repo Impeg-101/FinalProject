@@ -29,7 +29,7 @@ export const createPlaylist = (newListName, newSongs, userEmail) => {
         songs: newSongs,
         ownerEmail: userEmail,
         published: false,
-        opinion: {likes:"5", dislikes:"5",listens:"5"},
+        opinion: {likes:1, dislikes:1,listens:1},
         comments: []
     })
 }

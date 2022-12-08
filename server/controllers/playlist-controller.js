@@ -90,6 +90,7 @@ deletePlaylist = async (req, res) => {
     })
 }
 getPlaylistById = async (req, res) => {
+    console.log('___________________________________________________________________________________________')
     if(auth.verifyUser(req) === null){
         return res.status(400).json({
             errorMessage: 'UNAUTHORIZED'
@@ -127,11 +128,13 @@ getPlaylistById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getPlaylistPairs = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
+    console.log('___________________________________________________________________________________________')
+    // if(auth.verifyUser(req) === null){
+    //     return res.status(400).json({
+    //         errorMessage: 'UNAUTHORIZED'
+    //     })
+    // }
+    console.log('___________________________________________________________________________________________')
     console.log("getPlaylistPairs");
     await User.findOne({ _id: req.userId }, (err, user) => {
         console.log("find user with id " + req.userId);
@@ -158,7 +161,11 @@ getPlaylistPairs = async (req, res) => {
                             _id: list._id,
                             name: list.name,
                             opinion : list.opinion,
-                            published : list.published
+                            published : list.published,
+                            songs: list.songs,
+                            user: user,
+                            created: list.createdAt,
+                            edited: list.updatedAt
                         };
                         pairs.push(pair);
                     }
@@ -170,6 +177,7 @@ getPlaylistPairs = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getPlaylists = async (req, res) => {
+    console.log('___________________________________________________________________________________________')
     if(auth.verifyUser(req) === null){
         return res.status(400).json({
             errorMessage: 'UNAUTHORIZED'
@@ -188,6 +196,7 @@ getPlaylists = async (req, res) => {
     }).catch(err => console.log(err))
 }
 updatePlaylist = async (req, res) => {
+    console.log('___________________________________________________________________________________________')
     if(auth.verifyUser(req) === null){
         return res.status(400).json({
             errorMessage: 'UNAUTHORIZED'

@@ -1,33 +1,53 @@
 import { Box, Typography, List, TextField } from '@mui/material';
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth';
 
 
 function Player() {
 
     const {store} = useContext(GlobalStoreContext);
-
+    const { auth } = useContext(AuthContext);
     let sample = ["vaswfqdwf","hsdf","whrt","meyt"]
 
     const handleKeyDown = (event) =>{
-        console.log("comment");
+        if (event.code === "Enter") {
+            console.log(event.target.value);
+            let input = {comment:event.target.value, commenter: auth.user.firstName + " " +auth.user.lastName}
+            store.addComment(input)
+            store.loadComment();
+            event.target.value = ""
+        }
+    }
+
+
+    useEffect(() => {
+        if(store.currentListId !== null){
+            store.loadComment();
+        }
+    }, []);
+
+    let comments = [];
+    if(store.currentComment !== null){
+        comments = store.currentComment;
+    }else{
+        comments = [];
     }
 
     return (
             <Box id="comment">
-
-                <List>
+                <TextField onKeyDown={handleKeyDown} fullWidth id="comment-basic" label="Comment" variant="filled" />
+                <List >
                     {
-                        sample.map((comment) => (
+                        comments.map((comment) => (
                             <Box sx={{ p: 2, border: '1px dashed grey' }}>
-                                <Typography>author</Typography>
-                                <Typography>comment</Typography>
+                                <Typography>{comment.comment}</Typography>
+                                <Typography>{comment.commenter}</Typography>
                             </Box>
                         ))
                     }
                 </List>
                 
-                <TextField fullWidth id="comment-basic" label="Comment" variant="filled" />
                     
             </Box>
         );

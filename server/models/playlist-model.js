@@ -18,7 +18,7 @@ const playlistSchema = new Schema(
         }], required: true },
         comments: {type:[{
                     comment: String,
-                    commenter: ObjectId
+                    commenter: String
         }], required: true },
         opinion: {
             type: {

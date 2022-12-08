@@ -56,17 +56,14 @@ function WorkspaceScreen() {
 
     //   console.log("Workspace");
 
-      const handleClick = () => {
-        store.createNewList();
-      }
 
     return (
          <div>
             <SearchBar/>
             <PanelLeft/>
             <PanelRight/>
-            <div id="create-list-button"><Button
-                onClick={handleClick}>
+            <div id="create-list-button" className='panel-down'><Button
+                onClick={() => store.createNewList()}>
                 {"+ Your List"}
             </Button></div>
             {modalJSX}

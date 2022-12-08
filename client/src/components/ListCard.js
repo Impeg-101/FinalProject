@@ -107,40 +107,54 @@ function ListCard(props) {
     const handleClick = () => {
         store.currentList = null;
         store.openList(idNamePair._id);
-        setOpen(!open);
+        if(!open){
+            store.currentListId = idNamePair._id
+            store.loadComment();
+        }
+        else if(open && store.currentListId == idNamePair._id){
+            store.currentListId = null;
+            store.currentComment = null;
+        }
+        setOpen(store.currentListId == idNamePair._id);
+        console.log(store.currentListId)
       };
     
 
     const handleThumbsUp = () => {
-        console.log("up");
+        store.setLikes(idNamePair._id, idNamePair.opinion.likes + 1)
     }
     const handleThumbsDown = () => {
-        console.log("down");
+        store.setDislikes(idNamePair._id, idNamePair.opinion.dislikes + 1)
     }
 
-    if (store.currentList == null){
-    }
     
     let list = [];
     if(store.currentList !== null){
         list = store.currentList.songs;
     }
+
+    const handleDuplicate = () =>{
+        store.duplicate(idNamePair.songs);
+    }
+
+
+    console.log(store.currentListId == idNamePair._id)
+    console.log(store.currentListId)
+    if(open && store.currentListId !== idNamePair._id){
+        setOpen(false)
+    }
+
+
+
     
-    let listen = store.getListens(idNamePair._id);
-    let like = 0;
-    let dislike = 0;
-
-    console.log(idNamePair);
-
-
     let cardElement =
                 <ListItem sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
                 style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}>
-                    <Typography sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Typography>
+                    <Typography sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name+" from "+idNamePair.user.firstName + " " + idNamePair.user.lastName}</Typography>
                     <Box>
-                    <Typography>Listens : {listen}</Typography>
-                    <Typography><ThumbUpIcon variant='contained'onClick = {handleThumbsUp}/>{store.getLikes(idNamePair._id)}</Typography>
-                    <Typography><ThumbDownIcon onClick = {handleThumbsDown}/>{store.getDislikes(idNamePair._id)}</Typography>
+                    {/* <Typography>Listens : {idNamePair.opinion.listens}</Typography> */}
+                    <Typography><ThumbUpIcon variant='contained'onClick = {handleThumbsUp}/>{idNamePair.opinion.likes}</Typography>
+                    <Typography><ThumbDownIcon onClick = {handleThumbsDown}/>{idNamePair.opinion.dislikes}</Typography>
                     <EditIcon onClick = {handleToggleEdit}/>
                     <Button onClick = {(event) => handleDeleteList(event,idNamePair._id)}>Delete</Button>
                     
@@ -157,8 +171,8 @@ function ListCard(props) {
                     <Button onClick={handleAddNewSong}>Add Song</Button>
                     <Button onClick = {handleUndo}>Undo</Button>
                     <Button onClick = {handleRedo}>Redo</Button>
-                    <Button onClick = {handleUndo}>Publish</Button>
-                    <Button onClick = {handleUndo}>Duplicate</Button>
+                    {/* <Button onClick = {handleUndo}>Publish</Button> */}
+                    <Button onClick = {handleDuplicate}>Duplicate</Button>
                     
                 </Collapse>
                 </Box>

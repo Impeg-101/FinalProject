@@ -44,7 +44,7 @@ function Player() {
             <script src="./Player.js"></script>
             <iframe id="player" type="text/html" width="640" height="390"
   src={link}
-  frameborder="0"></iframe>
+  frameBorder="0"></iframe>
             <Box>
                 <Typography>
                     Playlist: <Typography display="inline">sda</Typography>

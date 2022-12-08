@@ -54,12 +54,13 @@ function GlobalStoreContextProvider(props) {
         idNamePairs: [],
         currentList: null,
         currentListId: null,
+        currentComment: null,
         currentSongIndex : -1,
         currentSong : null,
         newListCounter: 0,
         listNameActive: false,
         listIdMarkedForDeletion: null,
-        listMarkedForDeletion: null
+        listMarkedForDeletion: null,
     });
     const history = useHistory();
 
@@ -80,7 +81,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload.idNamePairs,
                     currentList: payload.playlist,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -95,7 +97,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: store.idNamePairs,
                     currentList: null,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -110,7 +113,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter + 1,
@@ -125,7 +129,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload,
                     currentList: null,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -140,7 +145,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.DELETE_LIST,
                     idNamePairs: store.idNamePairs,
                     currentList: null,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -155,7 +161,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -170,7 +177,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -185,7 +193,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.EDIT_SONG,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: payload.currentSongIndex,
                     currentSong: payload.currentSong,
                     newListCounter: store.newListCounter,
@@ -199,7 +208,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.REMOVE_SONG,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: payload.currentSongIndex,
                     currentSong: payload.currentSong,
                     newListCounter: store.newListCounter,
@@ -213,7 +223,8 @@ function GlobalStoreContextProvider(props) {
                     currentModal : CurrentModal.NONE,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
-                    currentListId: null,
+                    currentListId : store.currentListId,
+                    currentComment: store.currentComment,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -315,10 +326,39 @@ function GlobalStoreContextProvider(props) {
         const response = await api.getPlaylistById(id);
         if(response.data.success){
             store.currentList = response.data.playlist;
+            
             storeReducer({
                 type: GlobalStoreActionType.SET_CURRENT_LIST,
                 payload: store.currentList
             });
+        }
+    }
+
+    store.duplicate = async function(songs){
+        let newListName = "Untitled" + store.newListCounter;
+        const response2 = await api.getPlaylistPairs();
+        if(response2.data.success){
+            let nameList = [];
+            response2.data.idNamePairs.forEach((a) => {nameList.push(a.name)})
+            console.log(nameList);
+            while (nameList.includes(newListName)){
+                newListName = newListName + "(1)"
+            }
+        }
+        const response = await api.createPlaylist(newListName, songs, auth.user.email);
+        console.log("createNewList response: " + response);
+        if (response.status === 201) {
+            tps.clearAllTransactions();
+            let newList = response.data.playlist;
+            storeReducer({
+                type: GlobalStoreActionType.CREATE_NEW_LIST,
+                payload: newList
+            }
+            );
+            store.loadIdNamePairs();
+        }
+        else {
+            console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
 
@@ -342,85 +382,164 @@ function GlobalStoreContextProvider(props) {
         asyncLoadIdNamePairs();
     }
 
-    store.getLikes = function (id) {
-        async function asyncThumbUp(){
-            const response = await api.getPlaylistById(id);
-            if(response.data.success){
-                return response.data.playlist.opinion.likes
-            }
+    store.filterList = function (subject, input){
+        if(input == ""){
+            store.loadIdNamePairs();
+            return
         }
-        asyncThumbUp();
-    }
-    store.getDislikes = function (id) {
-        async function asyncThumbUp(){
-            const response = await api.getPlaylistById(id);
-            if(response.data.success){
-                return response.data.playlist.opinion.dislikes
-            }
-        }
-        asyncThumbUp();
-    }
-    store.getListens = function (id) {
-        let output = 0;
-        async function asyncThumbUp(){
-            const response = await api.getPlaylistById(id);
-            if(response.data.success){
-                output = response.data.playlist.opinion.listens
-            }
-        }
-        asyncThumbUp();
 
-        return output;
+        async function asyncLoadIdNamePairs() {
+            const response = await api.getPlaylistPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                if(subject){
+                    pairsArray = pairsArray.filter((pair) => {
+                        let user = (pair.user.firstname +" "+ pair.user.lastname).toLowerCase()
+                        return (pair.user.firstname +" "+ pair.user.lastname).toLowerCase().includes(input.toLowerCase())
+                    });
+                }else{
+                    pairsArray = pairsArray.filter((pair) => {
+                    return pair.name.toLowerCase().includes(input.toLowerCase())
+                });}
+
+                // console.log(pairsArray);
+                store.idNamePairs = pairsArray;
+                console.log(pairsArray)
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: pairsArray
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.loadComment = function(){
+        if(store.currentListId == null){
+            return
+        }
+        async function asyncLoadIdNamePairs() {
+            const response = await api.getPlaylistById(store.currentListId);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                // console.log(pairsArray);
+                store.currentComment = playlist.comments;
+                storeReducer({
+                    type: GlobalStoreActionType.HIDE_MODALS,
+                    payload: {}
+                });   
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.addComment = function(comment){
+        if(store.currentListId == null){
+            return
+        }
+        async function asyncLoadIdNamePairs() {
+            const response = await api.getPlaylistById(store.currentListId);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                console.log(playlist.comments);
+                console.log(comment)
+                playlist.comments.push(comment);
+                store.currentComment = playlist.comments;
+                async function updateList() {
+                    let response = await api.updatePlaylistById(playlist._id, playlist);
+                    storeReducer({
+                        type: GlobalStoreActionType.HIDE_MODALS,
+                        payload: {}
+                    });   
+                    store.loadComment();
+                }
+                updateList();
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.sortList = function (subject){
+        console.log(subject);
+        async function asyncLoadIdNamePairs() {
+            const response = await api.getPlaylistPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                if(subject == "c"){
+                    pairsArray.sort((a,b)=>{
+                        return a.created>b.created
+                    });
+                }else if(subject == "e"){
+                    pairsArray.sort((a,b) => {
+                        return a.edited<b.edited
+                    });
+                }else{
+                    pairsArray.sort((a,b)=>{
+                        return a.name.toLowerCase() > b.name.toLowerCase()
+                    });
+                }
+                console.log(pairsArray[0].created)
+
+                // console.log(pairsArray);
+                store.idNamePairs = pairsArray;
+                console.log(pairsArray)
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: pairsArray
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.comment = function(id, content){
+        
     }
 
     store.setLikes = function (id, amount) {
         async function asyncThumbUp(){
             const response = await api.getPlaylistById(id);
             if(response.data.success){
-                return response.data.playlist.opinion.likes
+                let playlist = response.data.playlist
+                console.log(playlist)
+                playlist.opinion.likes = amount
+                console.log(playlist)
+                async function updateList() {
+                    let response = await api.updatePlaylistById(playlist._id, playlist);
+                    if (response.data.success) {
+                        store.loadIdNamePairs();
+                    }
+                }
+                updateList();
             }
         }
         asyncThumbUp();
     }
+
     store.setDislikes = function (id, amount) {
         async function asyncThumbUp(){
             const response = await api.getPlaylistById(id);
             if(response.data.success){
-                return response.data.playlist.opinion.dislikes
-            }
-        }
-        asyncThumbUp();
-    }
-    store.setListens = function (id, amount) {
-        async function asyncThumbUp(){
-            const response = await api.getPlaylistById(id);
-            if(response.data.success){
-                response.data.playlist.opinion.listens = parseInt(response.data.playlist.opinion.listens) + amount
                 let playlist = response.data.playlist
-                playlist.opinion.listens = parseInt(playlist.opinion.listens) + amount
-                async function updateList(playlist) {
-                    response = await api.updatePlaylistById(playlist._id, playlist);
+                console.log(playlist)
+                playlist.opinion.dislikes = amount
+                console.log(playlist)
+                async function updateList() {
+                    let response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        async function getListPairs(playlist) {
-                            response = await api.getPlaylistPairs();
-                            if (response.data.success) {
-                                let pairsArray = response.data.idNamePairs;
-                                store.idNamePairs = pairsArray;
-                                storeReducer({
-                                    type: GlobalStoreActionType.CHANGE_LIST_NAME,
-                                    payload: {
-                                        idNamePairs: pairsArray,
-                                        playlist: playlist
-                                    }
-                                });
-                                store.setCurrentList(id);
-                            }
-                        }
-                        getListPairs(playlist);
+                        store.loadIdNamePairs();
                     }
                 }
-                updateList(playlist);
-                return response.data.playlist.opinion.listens
+                updateList();
             }
         }
         asyncThumbUp();

@@ -7,6 +7,7 @@ import { GlobalStoreContext } from '../store'
 import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from './MUIRemoveSongModal'
 import Box from '@mui/material/Box';
+import Popover from '@mui/material/Popover';
 import List from '@mui/material/List';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -35,6 +36,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import HomeIcon from '@mui/icons-material/Home';
 import SortIcon from '@mui/icons-material/Sort';
+import GroupsIcon from '@mui/icons-material/Groups';
+import PersonIcon from '@mui/icons-material/Person';
 
 
 
@@ -75,54 +78,94 @@ function SearchBar() {
       },
     }));
 
-    const handleButton = () => {console.log("button clicked")}
+    const handleButton = () => {
+
+      console.log("button clicked")
+    
+    }
+
+    const handleSort = () => {
+      store.sortList("s");
+    }
+
+
+
+    const [subject, setSubject] = useState(false);
+
+    let option = "User Search"
+
     const handleKeydown = (event) => {
       if (event.key === 'Enter'){
         console.log("enter clicked")
+        console.log(event.target.value)
+        store.filterList(subject, event.target.value)
       }
     } 
+
+    const [anchorE, setAnchorE] = React.useState(null);
+
+    const handleClick = (event) => {
+      setAnchorE(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorE(null);
+    };
+  
+    const open = Boolean(anchorE);
+    const id = open ? 'simple-popover' : undefined;
 
     return (
       <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ background: '#ff5722' }}>
         <Toolbar>
         <IconButton 
-          variant="outlined"
-          aria-label = "HomeIcon"
-          color='inherit'
-          onClick={handleButton}
-          >
-            <HomeIcon/>
+          ><Link to='/'><HomeIcon/></Link>
           </IconButton>
 
           <IconButton 
           variant="outlined"
-          aria-label = "HomeIcon"
+          aria-label = "GroupsIcon"
           color='inherit'
-          onClick={handleButton}
+          
           >
-            <HomeIcon/>
+            <GroupsIcon onClick={() => {setSubject(false)}}/>
           </IconButton>
 
           <IconButton 
           variant="outlined"
-          aria-label = "HomeIcon"
+          aria-label = "PersonIcon"
           color='inherit'
-          onClick={handleButton}
+          
           >
-            <HomeIcon/>
+            <PersonIcon onClick={() => {setSubject(true)}}/>
           </IconButton>
 
-          <Search>
+          <Search style={{ marginLeft: "auto" }}>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder={subject ? "User Search" : "Playlist Search"}
               inputProps={{ 'aria-label': 'search' }}
               onKeyDown = {handleKeydown}
+              
             />
           </Search>
 
-          <Typography>Sort By</Typography>
-          <SortIcon/>
+          <Typography style={{ marginLeft: "20%" }}>Sort By<Popover
+        id={id}
+        open={open}
+        anchorEl={anchorE}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <List sx={{ p: 1,overflow: 'auto' }}>
+          <Button onClick={()=>store.sortList("c")} style={{ background: '#ffc107' }} >Date Created</Button>
+          <Button onClick={()=>store.sortList("e")} style={{ background: '#ffc107' }}>Date Edited</Button>
+          <Button onClick={()=>store.sortList("a")} style={{ background: '#ffc107' }}>A-Z</Button>
+        </List>
+      </Popover><SortIcon onClick={handleClick}/></Typography>
 
         </Toolbar>
       </AppBar>

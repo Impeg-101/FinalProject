@@ -143,6 +143,7 @@ export default function AppBanner() {
         bar = loginBar;
     }
 
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" style={{ background: '#ffc107' }}>
