@@ -13,6 +13,11 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import SongCard from './SongCard';
 import AuthContext from '../auth';
 import api from '../store/store-request-api'
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
+import AddIcon from '@mui/icons-material/Add';
+import ClearIcon from '@mui/icons-material/Clear';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 /*
 
@@ -169,10 +174,10 @@ function ListCard(props) {
                                             />))}
                     </List>
                     <Button onClick={handleAddNewSong}>Add Song</Button>
-                    <Button onClick = {handleUndo}>Undo</Button>
-                    <Button onClick = {handleRedo}>Redo</Button>
+                    <Button onClick = {handleUndo}>UndoIcon</Button>
+                    <Button onClick = {handleRedo}>RedoIcon</Button>
                     {/* <Button onClick = {handleUndo}>Publish</Button> */}
-                    <Button onClick = {handleDuplicate}>Duplicate</Button>
+                    <Button onClick = {handleDuplicate}>ContentCopyIcon</Button>
                     
                 </Collapse>
                 </Box>
