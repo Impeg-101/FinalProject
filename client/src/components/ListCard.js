@@ -153,9 +153,9 @@ function ListCard(props) {
 
     
     let cardElement =
-                <ListItem sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
+                <ListItem sx={{borderRadius:"25px", p: "10px", bgcolor: '#f57c00', marginTop: '15px', display: 'flex', p: 1 }}
                 style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}>
-                    <Typography sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name+" from "+idNamePair.user.firstName + " " + idNamePair.user.lastName}</Typography>
+                    <Typography sx={{ p: 1, flexGrow: 1 ,fontSize: 34,fontWeight: 'bold',}}>{idNamePair.name+" from "+idNamePair.user.firstName + " " + idNamePair.user.lastName}</Typography>
                     <Box>
                     {/* <Typography>Listens : {idNamePair.opinion.listens}</Typography> */}
                     <Typography><ThumbUpIcon variant='contained'onClick = {handleThumbsUp}/>{idNamePair.opinion.likes}</Typography>

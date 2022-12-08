@@ -62,7 +62,8 @@ function WorkspaceScreen() {
             <SearchBar/>
             <PanelLeft/>
             <PanelRight/>
-            <div id="create-list-button" className='panel-down'><Button
+            <div id="create-list-button" className='panel-down'><Button variant='outlined'
+  sx={{ color: 'yellow', backgroundColor: 'orange',fontSize: 50,padding: "6px 337px" }}
                 onClick={() => store.createNewList()}>
                 {"+ Your List"}
             </Button></div>
